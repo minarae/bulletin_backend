@@ -1,0 +1,93 @@
+[flake8]
+# line length는 black 기본값인 88로 설정 (PEP8 기본 79보다 여유있게)
+max-line-length = 88
+
+# E501: 라인 길이 초과 (무시)
+# W503: 연산자 전에 줄 바꿈 (무시, black이 이 스타일을 사용함)
+# E203: 콜론 앞뒤 공백 (무시, black 호환성)
+ignore = E501, W503, E203
+
+# fastapi 앱에 맞게 제외할 파일 경로
+exclude =
+    .git,
+    __pycache__,
+    .venv,
+    venv,
+    env,
+    alembic,
+    migrations,
+    .env,
+    .vscode,
+    .idea,
+    node_modules,
+    build,
+    dist
+
+# 코드 복잡도 제한
+max-complexity = 10
+
+# 임포트 순서 확인 (isort와 호환)
+application-import-names = app, tests
+import-order-style = pep8
+
+# 독스트링 검사 활성화
+docstring-convention = google
+
+# 추가 플러그인들
+extend-select =
+    # 일반적인 코드 품질
+    B,    # flake8-bugbear
+    C,    # mccabe
+    D,    # pydocstyle
+    F,    # pyflakes
+    I,    # isort
+    S,    # flake8-bandit (보안 이슈)
+    T,    # mypy
+    W,    # pycodestyle
+
+    # 자주 범하는 실수 및 안티패턴
+    B950, # 라인 길이 경고 (엄격한 제한 대신)
+    DAR,  # darglint (독스트링 일관성)
+    N,    # pep8-naming
+
+# Per-file-ignores - 특정 파일 유형에는 다른 규칙 적용
+per-file-ignores =
+    # 테스트 파일은 독스트링 규칙 완화
+    tests/*:D,
+    # 마이그레이션 파일은 복잡도/길이 규칙 완화
+    migrations/*:C,D,
+    # __init__.py 파일은 임포트 규칙 완화
+    __init__.py:F401,
+
+# 독스트링 검사 설정
+[pydocstyle]
+convention = google
+add-select = D417  # Missing argument description in Docstring
+
+# mypy 타입 검사 설정
+[mypy]
+python_version = 3.10
+disallow_untyped_defs = True
+disallow_incomplete_defs = True
+check_untyped_defs = True
+disallow_untyped_decorators = True
+no_implicit_optional = True
+strict_optional = True
+warn_redundant_casts = True
+warn_return_any = True
+warn_unused_ignores = True
+
+# FastAPI 의존성에 대한 타입 설정
+[[mypy.overrides]]
+module = ["fastapi.*", "pydantic.*", "sqlalchemy.*"]
+ignore_missing_imports = True
+
+# isort 설정 (import 순서)
+[isort]
+profile = black
+line_length = 88
+multi_line_output = 3
+include_trailing_comma = True
+force_grid_wrap = 0
+use_parentheses = True
+ensure_newline_before_comments = True
