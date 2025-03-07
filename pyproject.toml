@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "bulletin-backend"
+version = "0.1.0"
+description = "Bulletin Backend API"
+authors = ["User"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.11.11"
+fastapi = "^0.115.11"
+uvicorn = "^0.34.0"
+gunicorn = "^23.0.0"
+sqlalchemy = "^2.0.38"
+alembic = "^1.15.1"
+asyncpg = "^0.30.0"
+python-dotenv = "^1.0.1"
+pydantic = "^2.10.6"
+pydantic-settings = "^2.8.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
