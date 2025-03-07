@@ -1,26 +1,28 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.v1.api import api_router
 from app.core.config import settings
+from app.routers import router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     debug=settings.DEBUG,
 )
 
-# Set all CORS enabled origins
+# CORS 미들웨어 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # 실제 운영 환경에서는 허용할 도메인만 지정
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-app.include_router(api_router)
+# 라우터 등록
+app.include_router(router)
 
 
-@app.get("/")
-async def root():
-    return {"message": "Welcome to Bulletin Backend API"}
+@app.get("/health")
+def health_check():
+    """헬스 체크 엔드포인트"""
+    return {"status": "ok"}

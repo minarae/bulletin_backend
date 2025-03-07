@@ -4,16 +4,18 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        case_sensitive=True
-    )
+    """애플리케이션 설정 클래스"""
 
     PROJECT_NAME: str = "Bulletin Backend"
-    SECRET_KEY: str
+    API_V1_STR: str = "/api/v1"
+
+    # JWT 설정
+    SECRET_KEY: str = "your-secret-key-for-jwt"  # 실제 운영 환경에서는 환경 변수로 관리
+    REFRESH_SECRET_KEY: str = "your-refresh-secret-key-for-jwt"  # 실제 운영 환경에서는 환경 변수로 관리
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    ACCESS_TOKEN_EXPIRE_HOURS: int = 8  # 액세스 토큰 만료 시간 (8시간)
+    REFRESH_TOKEN_EXPIRE_HOURS: int = 24  # 리프레시 토큰 만료 시간 (24시간)
+
     DEBUG: bool = False
 
     POSTGRES_SERVER: str
