@@ -1,6 +1,6 @@
 from typing import Any, Dict, Optional
 from pydantic import PostgresDsn, field_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
