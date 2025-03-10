@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+from pydantic import BaseModel
 
 from app.deps import get_db
 from app.schemas.user import Token, User, UserCreate
-from app.services.auth import AuthService, oauth2_scheme
+from app.services.auth import AuthService
 from app.services.user import UserService
 
 router = APIRouter()
@@ -43,21 +44,27 @@ def login(
         )
 
     return {
-        "access_token": AuthService.create_access_token(user.id),
-        "refresh_token": AuthService.create_refresh_token(user.id),
-        "token_type": "bearer",
+        "access_token": AuthService.create_access_token(user),
+        "refresh_token": AuthService.create_refresh_token(user),
+        "token_type": "Bearer",
     }
+
+
+class RefreshTokenRequest(BaseModel):
+    """리프레시 토큰 요청 스키마"""
+    refresh_token: str
 
 
 @router.post("/refresh", response_model=Token)
 def refresh_token(
+    *,
     db: Session = Depends(get_db),
-    refresh_token: str = Depends(oauth2_scheme),
+    token_data: RefreshTokenRequest,
 ) -> Token:
     """리프레시 토큰을 사용하여 새로운 액세스 토큰 발급"""
     try:
-        token_data = AuthService.decode_token(refresh_token, refresh=True)
-        user = UserService.get_by_id(db=db, user_id=token_data.sub)
+        token_payload = AuthService.decode_token(token_data.refresh_token, refresh=True)
+        user = UserService.get_by_id(db=db, user_id=token_payload.sub)
         if not user or not user.is_active:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -65,9 +72,9 @@ def refresh_token(
             )
 
         return {
-            "access_token": AuthService.create_access_token(user.id),
-            "refresh_token": AuthService.create_refresh_token(user.id),
-            "token_type": "bearer",
+            "access_token": AuthService.create_access_token(user),
+            "refresh_token": AuthService.create_refresh_token(user),
+            "token_type": "Bearer",
         }
     except HTTPException:
         raise HTTPException(

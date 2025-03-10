@@ -1,5 +1,4 @@
 from sqlalchemy import Boolean, Column, Integer, String, DateTime
-from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from app.db.base_class import Base
@@ -16,6 +15,8 @@ class User(Base):
     is_superuser = Column(Boolean(), default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    is_deleted = Column(Boolean(), nullable=False, default=False)
+    deleted_at = Column(DateTime(timezone=True), nullable=True)
 
     # Relationships
-    church_admin_roles = relationship("ChurchAdmin", back_populates="user")
+    # church_admin_roles = relationship("ChurchAdmin", back_populates="user")

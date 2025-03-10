@@ -24,8 +24,8 @@ class UserUpdate(UserBase):
 class UserInDBBase(UserBase):
     """데이터베이스 사용자 기본 스키마"""
     id: int
-    created_at: datetime
-    updated_at: datetime
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True
@@ -45,10 +45,12 @@ class Token(BaseModel):
     """토큰 스키마"""
     access_token: str
     refresh_token: str
-    token_type: str
+    token_type: str = "Bearer"
 
 
 class TokenPayload(BaseModel):
     """토큰 페이로드 스키마"""
-    sub: int
-    exp: datetime
+    sub: str  # 사용자 ID 또는 서비스 이름
+    email: str  # 사용자 이메일
+    name: Optional[str] = None  # 사용자 이름
+    exp: int  # 만료 시간 (Unix timestamp)
