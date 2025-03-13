@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Boolean, Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -9,11 +9,14 @@ class Church(Base):
     __tablename__ = "tb_churches"
 
     id = Column(Integer, primary_key=True, index=True)
+    church_code = Column(String, unique=True, index=True, nullable=False)
     name = Column(String, index=True, nullable=False)
     address = Column(String)
     contact_info = Column(String)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    is_deleted = Column(Boolean(), nullable=False, default=False)
+    deleted_at = Column(DateTime(timezone=True), nullable=True)
 
     # Relationships
     admins = relationship("ChurchAdmin", back_populates="church")
@@ -28,6 +31,9 @@ class ChurchAdmin(Base):
     church_id = Column(Integer, ForeignKey("tb_churches.id"), nullable=False)
     user_id = Column(Integer, ForeignKey("tb_users.id"), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    is_deleted = Column(Boolean(), nullable=False, default=False)
+    deleted_at = Column(DateTime(timezone=True), nullable=True)
 
     # Relationships
     church = relationship("Church", back_populates="admins")

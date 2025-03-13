@@ -54,3 +54,16 @@ class TokenPayload(BaseModel):
     email: str  # 사용자 이메일
     name: Optional[str] = None  # 사용자 이름
     exp: int  # 만료 시간 (Unix timestamp)
+
+
+class PasswordResetRequest(BaseModel):
+    """비밀번호 재설정 요청 스키마"""
+    email: EmailStr
+    full_name: str
+
+
+class PasswordReset(BaseModel):
+    """비밀번호 재설정 스키마"""
+    email: EmailStr
+    full_name: str
+    new_password: str

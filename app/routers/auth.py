@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 
 from app.deps import get_db
-from app.schemas.user import Token, User, UserCreate
+from app.schemas.user import Token, User, UserCreate, PasswordResetRequest, PasswordReset
 from app.services.auth import AuthService
 from app.services.user import UserService
 
@@ -81,3 +81,57 @@ def refresh_token(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid refresh token",
         )
+
+
+@router.post("/check-reset-eligibility", response_model=dict)
+def check_reset_eligibility(
+    *,
+    db: Session = Depends(get_db),
+    reset_request: PasswordResetRequest,
+) -> dict:
+    """비밀번호 재설정 자격 확인"""
+    user = UserService.get_by_email(db=db, email=reset_request.email)
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
+        )
+
+    if user.full_name != reset_request.full_name:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Name does not match",
+        )
+
+    return {"eligible": True, "message": "User is eligible for password reset"}
+
+
+@router.post("/reset-password", response_model=dict)
+def reset_password(
+    *,
+    db: Session = Depends(get_db),
+    reset_data: PasswordReset,
+) -> dict:
+    """비밀번호 재설정"""
+    user = UserService.get_by_email(db=db, email=reset_data.email)
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
+        )
+
+    if user.full_name != reset_data.full_name:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Name does not match",
+        )
+
+    # 비밀번호 업데이트
+    user.hashed_password = AuthService.get_password_hash(reset_data.new_password)
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    return {"success": True, "message": "Password has been reset successfully"}
