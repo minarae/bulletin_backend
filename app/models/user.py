@@ -1,5 +1,6 @@
 from sqlalchemy import Boolean, Column, Integer, String, DateTime
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 
 from app.db.base_class import Base
 
@@ -19,4 +20,4 @@ class User(Base):
     deleted_at = Column(DateTime(timezone=True), nullable=True)
 
     # Relationships
-    # church_admin_roles = relationship("ChurchAdmin", back_populates="user")
+    church_admin_roles = relationship("ChurchAdmin", back_populates="user")

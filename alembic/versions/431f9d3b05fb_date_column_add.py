@@ -31,6 +31,14 @@ def upgrade() -> None:
 
     op.add_column('tb_bulletins', sa.Column('is_deleted', sa.Boolean(), nullable=False, default=False))
     op.add_column('tb_bulletins', sa.Column('deleted_at', sa.DateTime(timezone=True), nullable=True))
+
+    op.execute("UPDATE tb_churches SET is_deleted = FALSE")
+    op.execute("UPDATE tb_church_admins SET is_deleted = FALSE")
+    op.execute("UPDATE tb_bulletin_templates SET is_deleted = FALSE")
+
+    op.alter_column('tb_churches', 'is_deleted', nullable=False)
+    op.alter_column('tb_church_admins', 'is_deleted', nullable=False)
+    op.alter_column('tb_bulletin_templates', 'is_deleted', nullable=False)
     # ### end Alembic commands ###
 
 
@@ -41,6 +49,7 @@ def downgrade() -> None:
     op.drop_column('tb_bulletins', 'is_deleted')
     op.drop_column('tb_bulletin_templates', 'deleted_at')
     op.drop_column('tb_bulletin_templates', 'is_deleted')
+    op.drop_column('tb_church_admins', 'updated_at')
     op.drop_column('tb_church_admins', 'deleted_at')
     op.drop_column('tb_church_admins', 'is_deleted')
     op.drop_column('tb_churches', 'deleted_at')
