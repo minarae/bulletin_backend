@@ -23,19 +23,6 @@ def read_churches(
     """현재 로그인한 사용자가 관리하는 교회 목록을 반환합니다."""
     # 사용자가 관리하는 교회 ID 목록 조회
     print(f"current_user: {current_user}")
-    """
-    church_ids = db.query(ChurchAdmin.church_id).filter(
-        ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted == False  # noqa: E712
-    ).all()
-    church_ids = [church_id[0] for church_id in church_ids]
-
-    # 교회 목록 조회
-    churches = db.query(Church).filter(
-        Church.id.in_(church_ids),
-        Church.is_deleted == False  # noqa: E712
-    ).offset(skip).limit(limit).all()
-    """
 
     churches = db.query(Church) \
         .join(ChurchAdmin, Church.id == ChurchAdmin.church_id) \

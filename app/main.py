@@ -1,7 +1,9 @@
 import logging
+import os
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.core.config import settings
 from app.routers import router
@@ -27,6 +29,11 @@ app.add_middleware(
     allow_headers=["Content-Type", "Authorization", "Accept"],
     expose_headers=["Content-Type", "Authorization"],
 )
+
+# 정적 파일 디렉토리 설정
+uploads_dir = "uploads"
+os.makedirs(uploads_dir, exist_ok=True)
+app.mount("/static", StaticFiles(directory=uploads_dir), name="static")
 
 # 라우터 등록
 app.include_router(router)

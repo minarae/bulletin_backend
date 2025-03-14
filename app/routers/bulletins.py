@@ -42,7 +42,7 @@ def read_bulletins(
     # 주보 목록 조회
     bulletins = db.query(Bulletin).filter(
         Bulletin.church_id == church_id,
-        Bulletin.is_deleted is False
+        Bulletin.is_deleted == False  # noqa: E712
     ).order_by(Bulletin.date.desc()).offset(skip).limit(limit).all()
 
     return bulletins
@@ -79,7 +79,7 @@ def create_bulletin(
     template = db.query(BulletinTemplate).filter(
         BulletinTemplate.id == bulletin.template_id,
         BulletinTemplate.church_id == church_id,
-        BulletinTemplate.is_deleted is False
+        BulletinTemplate.is_deleted == False  # noqa: E712
     ).first()
 
     if template is None:
@@ -130,7 +130,7 @@ def read_bulletin(
     bulletin = db.query(Bulletin).filter(
         Bulletin.id == bulletin_id,
         Bulletin.church_id == church_id,
-        Bulletin.is_deleted is False
+        Bulletin.is_deleted == False  # noqa: E712
     ).first()
 
     if bulletin is None:
@@ -171,7 +171,7 @@ def update_bulletin(
     bulletin = db.query(Bulletin).filter(
         Bulletin.id == bulletin_id,
         Bulletin.church_id == church_id,
-        Bulletin.is_deleted is False
+        Bulletin.is_deleted == False  # noqa: E712
     ).first()
 
     if bulletin is None:
@@ -182,7 +182,7 @@ def update_bulletin(
         template = db.query(BulletinTemplate).filter(
             BulletinTemplate.id == bulletin_update.template_id,
             BulletinTemplate.church_id == church_id,
-            BulletinTemplate.is_deleted is False
+            BulletinTemplate.is_deleted == False  # noqa: E712
         ).first()
 
         if template is None:
@@ -229,7 +229,7 @@ def delete_bulletin(
     bulletin = db.query(Bulletin).filter(
         Bulletin.id == bulletin_id,
         Bulletin.church_id == church_id,
-        Bulletin.is_deleted is False
+        Bulletin.is_deleted == False  # noqa: E712
     ).first()
 
     if bulletin is None:

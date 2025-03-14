@@ -42,7 +42,7 @@ def read_templates(
     # 템플릿 목록 조회
     templates = db.query(BulletinTemplate).filter(
         BulletinTemplate.church_id == church_id,
-        BulletinTemplate.is_deleted is False
+        BulletinTemplate.is_deleted == False  # noqa: E712
     ).offset(skip).limit(limit).all()
 
     return templates
@@ -99,7 +99,7 @@ def read_template(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted is False
+        Church.is_deleted == False  # noqa: E712
     ).first()
 
     if db_church is None:
@@ -109,7 +109,7 @@ def read_template(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted is False
+        ChurchAdmin.is_deleted == False  # noqa: E712
     ).first()
 
     if not is_admin:
@@ -119,7 +119,7 @@ def read_template(
     template = db.query(BulletinTemplate).filter(
         BulletinTemplate.id == template_id,
         BulletinTemplate.church_id == church_id,
-        BulletinTemplate.is_deleted is False
+        BulletinTemplate.is_deleted == False  # noqa: E712
     ).first()
 
     if template is None:
@@ -140,7 +140,7 @@ def update_template(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted is False
+        Church.is_deleted == False  # noqa: E712
     ).first()
 
     if db_church is None:
@@ -150,7 +150,7 @@ def update_template(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted is False
+        ChurchAdmin.is_deleted == False  # noqa: E712
     ).first()
 
     if not is_admin:
@@ -160,7 +160,7 @@ def update_template(
     template = db.query(BulletinTemplate).filter(
         BulletinTemplate.id == template_id,
         BulletinTemplate.church_id == church_id,
-        BulletinTemplate.is_deleted is False
+        BulletinTemplate.is_deleted == False  # noqa: E712
     ).first()
 
     if template is None:
@@ -187,7 +187,7 @@ def delete_template(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted is False
+        Church.is_deleted == False  # noqa: E712
     ).first()
 
     if db_church is None:
@@ -197,7 +197,7 @@ def delete_template(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted is False
+        ChurchAdmin.is_deleted == False  # noqa: E712
     ).first()
 
     if not is_admin:
@@ -207,7 +207,7 @@ def delete_template(
     template = db.query(BulletinTemplate).filter(
         BulletinTemplate.id == template_id,
         BulletinTemplate.church_id == church_id,
-        BulletinTemplate.is_deleted is False
+        BulletinTemplate.is_deleted == False  # noqa: E712
     ).first()
 
     if template is None:
@@ -219,3 +219,53 @@ def delete_template(
     db.commit()
 
     return {"detail": "템플릿이 삭제되었습니다"}
+
+
+@router.post("/{church_id}/{template_id}/copy", response_model=schemas.BulletinTemplate)
+def copy_template(
+    church_id: int,
+    template_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(AuthService.get_current_user)
+):
+    """기존 템플릿을 복사하여 새 템플릿을 생성합니다."""
+    # 교회 조회
+    db_church = db.query(Church).filter(
+        Church.id == church_id,
+        Church.is_deleted == False  # noqa: E712
+    ).first()
+
+    if db_church is None:
+        raise HTTPException(status_code=404, detail="교회를 찾을 수 없습니다")
+
+    # 권한 확인
+    is_admin = db.query(ChurchAdmin).filter(
+        ChurchAdmin.church_id == church_id,
+        ChurchAdmin.user_id == current_user.id,
+        ChurchAdmin.is_deleted == False  # noqa: E712
+    ).first()
+
+    if not is_admin:
+        raise HTTPException(status_code=403, detail="접근 권한이 없습니다")
+
+    # 원본 템플릿 조회
+    original_template = db.query(BulletinTemplate).filter(
+        BulletinTemplate.id == template_id,
+        BulletinTemplate.church_id == church_id,
+        BulletinTemplate.is_deleted == False  # noqa: E712
+    ).first()
+
+    if original_template is None:
+        raise HTTPException(status_code=404, detail="템플릿을 찾을 수 없습니다")
+
+    # 복사본 생성
+    new_template = BulletinTemplate(
+        church_id=church_id,
+        name=f"{original_template.name} (복사본)",
+        template_data=original_template.template_data
+    )
+    db.add(new_template)
+    db.commit()
+    db.refresh(new_template)
+
+    return new_template
