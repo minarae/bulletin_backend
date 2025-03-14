@@ -23,7 +23,7 @@ def read_templates(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted is False
+        Church.is_deleted == False  # noqa: E712
     ).first()
 
     if db_church is None:
@@ -33,7 +33,7 @@ def read_templates(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted is False
+        ChurchAdmin.is_deleted == False  # noqa: E712
     ).first()
 
     if not is_admin:
@@ -59,7 +59,7 @@ def create_template(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted is False
+        Church.is_deleted == False  # noqa: E712
     ).first()
 
     if db_church is None:
@@ -69,7 +69,7 @@ def create_template(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted is False
+        ChurchAdmin.is_deleted == False  # noqa: E712
     ).first()
 
     if not is_admin:

@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, ConfigDict, validator
 import re
 from datetime import datetime
 
@@ -43,5 +43,4 @@ class Church(ChurchBase):
     updated_at: Optional[datetime] = None
     is_deleted: bool
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)

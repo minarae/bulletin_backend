@@ -1,5 +1,5 @@
 from typing import Optional, Dict, Any
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from datetime import datetime, date
 
 
@@ -28,8 +28,7 @@ class BulletinTemplate(BulletinTemplateBase):
     updated_at: Optional[datetime] = None
     is_deleted: bool
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class BulletinBase(BaseModel):
@@ -59,5 +58,4 @@ class Bulletin(BulletinBase):
     updated_at: Optional[datetime] = None
     is_deleted: bool
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)

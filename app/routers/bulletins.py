@@ -11,7 +11,7 @@ from app.services.auth import AuthService
 router = APIRouter()
 
 
-@router.get("/{church_id}/bulletins", response_model=List[schemas.Bulletin])
+@router.get("/{church_id}/", response_model=List[schemas.Bulletin])
 def read_bulletins(
     church_id: int,
     skip: int = 0,
@@ -23,7 +23,7 @@ def read_bulletins(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted is False
+        Church.is_deleted == False  # noqa: E712
     ).first()
 
     if db_church is None:
@@ -33,7 +33,7 @@ def read_bulletins(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted is False
+        ChurchAdmin.is_deleted == False  # noqa: E712
     ).first()
 
     if not is_admin:
@@ -48,7 +48,7 @@ def read_bulletins(
     return bulletins
 
 
-@router.post("/{church_id}/bulletins", response_model=schemas.Bulletin)
+@router.post("/{church_id}/", response_model=schemas.Bulletin)
 def create_bulletin(
     church_id: int,
     bulletin: schemas.BulletinCreate,
@@ -59,7 +59,7 @@ def create_bulletin(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted is False
+        Church.is_deleted == False  # noqa: E712
     ).first()
 
     if db_church is None:
@@ -69,7 +69,7 @@ def create_bulletin(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted is False
+        ChurchAdmin.is_deleted == False  # noqa: E712
     ).first()
 
     if not is_admin:
@@ -99,7 +99,7 @@ def create_bulletin(
     return new_bulletin
 
 
-@router.get("/{church_id}/bulletins/{bulletin_id}", response_model=schemas.Bulletin)
+@router.get("/{church_id}/{bulletin_id}", response_model=schemas.Bulletin)
 def read_bulletin(
     church_id: int,
     bulletin_id: int,
@@ -110,7 +110,7 @@ def read_bulletin(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted is False
+        Church.is_deleted == False  # noqa: E712
     ).first()
 
     if db_church is None:
@@ -120,7 +120,7 @@ def read_bulletin(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted is False
+        ChurchAdmin.is_deleted == False  # noqa: E712
     ).first()
 
     if not is_admin:
@@ -139,7 +139,7 @@ def read_bulletin(
     return bulletin
 
 
-@router.put("/{church_id}/bulletins/{bulletin_id}", response_model=schemas.Bulletin)
+@router.put("/{church_id}/{bulletin_id}", response_model=schemas.Bulletin)
 def update_bulletin(
     church_id: int,
     bulletin_id: int,
@@ -151,7 +151,7 @@ def update_bulletin(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted is False
+        Church.is_deleted == False  # noqa: E712
     ).first()
 
     if db_church is None:
@@ -161,7 +161,7 @@ def update_bulletin(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted is False
+        ChurchAdmin.is_deleted == False  # noqa: E712
     ).first()
 
     if not is_admin:
@@ -198,7 +198,7 @@ def update_bulletin(
     return bulletin
 
 
-@router.delete("/{church_id}/bulletins/{bulletin_id}")
+@router.delete("/{church_id}/{bulletin_id}")
 def delete_bulletin(
     church_id: int,
     bulletin_id: int,
@@ -209,7 +209,7 @@ def delete_bulletin(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted is False
+        Church.is_deleted == False  # noqa: E712
     ).first()
 
     if db_church is None:
@@ -219,7 +219,7 @@ def delete_bulletin(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted is False
+        ChurchAdmin.is_deleted == False  # noqa: E712
     ).first()
 
     if not is_admin:

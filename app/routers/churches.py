@@ -40,8 +40,8 @@ def read_churches(
     churches = db.query(Church) \
         .join(ChurchAdmin, Church.id == ChurchAdmin.church_id) \
         .filter(and_(
-            Church.is_deleted == False,         # noqa: E712
-            ChurchAdmin.is_deleted == False,    # noqa: E712
+            Church.is_deleted == False,  # noqa: E712
+            ChurchAdmin.is_deleted == False,  # noqa: E712
             ChurchAdmin.user_id == current_user.id
         )).offset(skip).limit(limit).all()
 
