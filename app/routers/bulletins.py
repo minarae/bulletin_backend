@@ -23,7 +23,7 @@ def read_bulletins(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted == False  # noqa: E712
+        Church.is_deleted == 'F'
     ).first()
 
     if db_church is None:
@@ -33,7 +33,7 @@ def read_bulletins(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted == False  # noqa: E712
+        ChurchAdmin.is_deleted == 'F'
     ).first()
 
     if not is_admin:
@@ -42,7 +42,7 @@ def read_bulletins(
     # 주보 목록 조회
     bulletins = db.query(Bulletin).filter(
         Bulletin.church_id == church_id,
-        Bulletin.is_deleted == False  # noqa: E712
+        Bulletin.is_deleted == 'F'
     ).order_by(Bulletin.date.desc()).offset(skip).limit(limit).all()
 
     return bulletins
@@ -59,7 +59,7 @@ def create_bulletin(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted == False  # noqa: E712
+        Church.is_deleted == 'F'
     ).first()
 
     if db_church is None:
@@ -69,7 +69,7 @@ def create_bulletin(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted == False  # noqa: E712
+        ChurchAdmin.is_deleted == 'F'
     ).first()
 
     if not is_admin:
@@ -79,7 +79,7 @@ def create_bulletin(
     template = db.query(BulletinTemplate).filter(
         BulletinTemplate.id == bulletin.template_id,
         BulletinTemplate.church_id == church_id,
-        BulletinTemplate.is_deleted == False  # noqa: E712
+        BulletinTemplate.is_deleted == 'F'
     ).first()
 
     if template is None:
@@ -110,7 +110,7 @@ def read_bulletin(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted == False  # noqa: E712
+        Church.is_deleted == 'F'
     ).first()
 
     if db_church is None:
@@ -120,7 +120,7 @@ def read_bulletin(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted == False  # noqa: E712
+        ChurchAdmin.is_deleted == 'F'
     ).first()
 
     if not is_admin:
@@ -130,7 +130,7 @@ def read_bulletin(
     bulletin = db.query(Bulletin).filter(
         Bulletin.id == bulletin_id,
         Bulletin.church_id == church_id,
-        Bulletin.is_deleted == False  # noqa: E712
+        Bulletin.is_deleted == 'F'
     ).first()
 
     if bulletin is None:
@@ -151,7 +151,7 @@ def update_bulletin(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted == False  # noqa: E712
+        Church.is_deleted == 'F'
     ).first()
 
     if db_church is None:
@@ -161,7 +161,7 @@ def update_bulletin(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted == False  # noqa: E712
+        ChurchAdmin.is_deleted == 'F'
     ).first()
 
     if not is_admin:
@@ -171,7 +171,7 @@ def update_bulletin(
     bulletin = db.query(Bulletin).filter(
         Bulletin.id == bulletin_id,
         Bulletin.church_id == church_id,
-        Bulletin.is_deleted == False  # noqa: E712
+        Bulletin.is_deleted == 'F'
     ).first()
 
     if bulletin is None:
@@ -182,7 +182,7 @@ def update_bulletin(
         template = db.query(BulletinTemplate).filter(
             BulletinTemplate.id == bulletin_update.template_id,
             BulletinTemplate.church_id == church_id,
-            BulletinTemplate.is_deleted == False  # noqa: E712
+            BulletinTemplate.is_deleted == 'F'
         ).first()
 
         if template is None:
@@ -209,7 +209,7 @@ def delete_bulletin(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted == False  # noqa: E712
+        Church.is_deleted == 'F'
     ).first()
 
     if db_church is None:
@@ -219,7 +219,7 @@ def delete_bulletin(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted == False  # noqa: E712
+        ChurchAdmin.is_deleted == 'F'
     ).first()
 
     if not is_admin:
@@ -229,7 +229,7 @@ def delete_bulletin(
     bulletin = db.query(Bulletin).filter(
         Bulletin.id == bulletin_id,
         Bulletin.church_id == church_id,
-        Bulletin.is_deleted == False  # noqa: E712
+        Bulletin.is_deleted == 'F'
     ).first()
 
     if bulletin is None:

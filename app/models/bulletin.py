@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, JSON, Date, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, JSON, Date, Boolean, CHAR
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -14,7 +14,7 @@ class BulletinTemplate(Base):
     template_data = Column(JSON, nullable=False)  # 기본 템플릿 데이터
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-    is_deleted = Column(Boolean(), nullable=False, default=False)
+    is_deleted = Column(CHAR(1), nullable=False, default="F")
     deleted_at = Column(DateTime(timezone=True), nullable=True)
 
     # Relationships
@@ -30,9 +30,10 @@ class Bulletin(Base):
     template_id = Column(Integer, ForeignKey("tb_bulletin_templates.id"), nullable=False)
     date = Column(Date, nullable=False)
     content = Column(JSON, nullable=False)  # 실제 주보 내용
+    is_published = Column(CHAR(1), nullable=False, default="F")
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-    is_deleted = Column(Boolean(), nullable=False, default=False)
+    is_deleted = Column(CHAR(1), nullable=False, default="F")
     deleted_at = Column(DateTime(timezone=True), nullable=True)
 
     # Relationships

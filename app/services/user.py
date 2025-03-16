@@ -17,7 +17,7 @@ class UserService:
         """이메일로 사용자 조회"""
         return db.query(User).filter(
             User.email == email,
-            User.is_deleted == False,  # noqa: E712
+            User.is_deleted == 'F',
         ).first()
 
     @staticmethod
@@ -25,7 +25,7 @@ class UserService:
         """ID로 사용자 조회"""
         return db.query(User).filter(
             User.id == user_id,
-            User.is_deleted == False,  # noqa: E712
+            User.is_deleted == 'F',
         ).first()
 
     @staticmethod

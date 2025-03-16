@@ -6,7 +6,7 @@ authors = ["User"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "3.11.11"
+python = "^3.11.1"
 fastapi = "^0.115.11"
 uvicorn = "^0.34.0"
 gunicorn = "^23.0.0"

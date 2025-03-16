@@ -23,7 +23,7 @@ def read_templates(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted == False  # noqa: E712
+        Church.is_deleted == 'F'
     ).first()
 
     if db_church is None:
@@ -33,7 +33,7 @@ def read_templates(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted == False  # noqa: E712
+        ChurchAdmin.is_deleted == 'F'
     ).first()
 
     if not is_admin:
@@ -42,7 +42,7 @@ def read_templates(
     # 템플릿 목록 조회
     templates = db.query(BulletinTemplate).filter(
         BulletinTemplate.church_id == church_id,
-        BulletinTemplate.is_deleted == False  # noqa: E712
+        BulletinTemplate.is_deleted == 'F'
     ).offset(skip).limit(limit).all()
 
     return templates
@@ -59,7 +59,7 @@ def create_template(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted == False  # noqa: E712
+        Church.is_deleted == 'F'
     ).first()
 
     if db_church is None:
@@ -69,7 +69,7 @@ def create_template(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted == False  # noqa: E712
+        ChurchAdmin.is_deleted == 'F'
     ).first()
 
     if not is_admin:
@@ -99,7 +99,7 @@ def read_template(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted == False  # noqa: E712
+        Church.is_deleted == 'F'
     ).first()
 
     if db_church is None:
@@ -109,7 +109,7 @@ def read_template(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted == False  # noqa: E712
+        ChurchAdmin.is_deleted == 'F'
     ).first()
 
     if not is_admin:
@@ -119,7 +119,7 @@ def read_template(
     template = db.query(BulletinTemplate).filter(
         BulletinTemplate.id == template_id,
         BulletinTemplate.church_id == church_id,
-        BulletinTemplate.is_deleted == False  # noqa: E712
+        BulletinTemplate.is_deleted == 'F'
     ).first()
 
     if template is None:
@@ -140,7 +140,7 @@ def update_template(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted == False  # noqa: E712
+        Church.is_deleted == 'F'
     ).first()
 
     if db_church is None:
@@ -150,7 +150,7 @@ def update_template(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted == False  # noqa: E712
+        ChurchAdmin.is_deleted == 'F'
     ).first()
 
     if not is_admin:
@@ -160,7 +160,7 @@ def update_template(
     template = db.query(BulletinTemplate).filter(
         BulletinTemplate.id == template_id,
         BulletinTemplate.church_id == church_id,
-        BulletinTemplate.is_deleted == False  # noqa: E712
+        BulletinTemplate.is_deleted == 'F'
     ).first()
 
     if template is None:
@@ -187,7 +187,7 @@ def delete_template(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted == False  # noqa: E712
+        Church.is_deleted == 'F'
     ).first()
 
     if db_church is None:
@@ -197,7 +197,7 @@ def delete_template(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted == False  # noqa: E712
+        ChurchAdmin.is_deleted == 'F'
     ).first()
 
     if not is_admin:
@@ -207,7 +207,7 @@ def delete_template(
     template = db.query(BulletinTemplate).filter(
         BulletinTemplate.id == template_id,
         BulletinTemplate.church_id == church_id,
-        BulletinTemplate.is_deleted == False  # noqa: E712
+        BulletinTemplate.is_deleted == 'F'
     ).first()
 
     if template is None:
@@ -232,7 +232,7 @@ def copy_template(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted == False  # noqa: E712
+        Church.is_deleted == 'F'
     ).first()
 
     if db_church is None:
@@ -242,7 +242,7 @@ def copy_template(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted == False  # noqa: E712
+        ChurchAdmin.is_deleted == 'F'
     ).first()
 
     if not is_admin:
@@ -252,7 +252,7 @@ def copy_template(
     original_template = db.query(BulletinTemplate).filter(
         BulletinTemplate.id == template_id,
         BulletinTemplate.church_id == church_id,
-        BulletinTemplate.is_deleted == False  # noqa: E712
+        BulletinTemplate.is_deleted == 'F'
     ).first()
 
     if original_template is None:

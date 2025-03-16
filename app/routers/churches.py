@@ -27,8 +27,8 @@ def read_churches(
     churches = db.query(Church) \
         .join(ChurchAdmin, Church.id == ChurchAdmin.church_id) \
         .filter(and_(
-            Church.is_deleted == False,  # noqa: E712
-            ChurchAdmin.is_deleted == False,  # noqa: E712
+            Church.is_deleted == 'F',
+            ChurchAdmin.is_deleted == 'F',
             ChurchAdmin.user_id == current_user.id
         )).offset(skip).limit(limit).all()
 
@@ -47,7 +47,7 @@ def create_church(
     # 교회 코드 중복 확인
     db_church = db.query(Church).filter(
         Church.church_code == church.church_code,
-        Church.is_deleted == False  # noqa: E712
+        Church.is_deleted == 'F'
     ).first()
 
     if db_church:
@@ -83,7 +83,7 @@ def check_church_code(church_code: str, db: Session = Depends(get_db)):
     """교회 구분값 중복 확인"""
     db_church = db.query(Church).filter(
         Church.church_code == church_code,
-        Church.is_deleted == False  # noqa: E712
+        Church.is_deleted == 'F'
     ).first()
 
     if db_church:
@@ -101,7 +101,7 @@ def read_church(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted == False  # noqa: E712
+        Church.is_deleted == 'F'
     ).first()
 
     if db_church is None:
@@ -111,7 +111,7 @@ def read_church(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted == False  # noqa: E712
+        ChurchAdmin.is_deleted == 'F'
     ).first()
 
     if not is_admin:
@@ -131,7 +131,7 @@ def update_church(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted == False  # noqa: E712
+        Church.is_deleted == 'F'
     ).first()
 
     if db_church is None:
@@ -141,7 +141,7 @@ def update_church(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted == False  # noqa: E712
+        ChurchAdmin.is_deleted == 'F'
     ).first()
 
     if not is_admin:
@@ -167,7 +167,7 @@ def delete_church(
     # 교회 조회
     db_church = db.query(Church).filter(
         Church.id == church_id,
-        Church.is_deleted == False  # noqa: E712
+        Church.is_deleted == 'F'
     ).first()
 
     if db_church is None:
@@ -177,7 +177,7 @@ def delete_church(
     is_admin = db.query(ChurchAdmin).filter(
         ChurchAdmin.church_id == church_id,
         ChurchAdmin.user_id == current_user.id,
-        ChurchAdmin.is_deleted == False  # noqa: E712
+        ChurchAdmin.is_deleted == 'F'
     ).first()
 
     if not is_admin:
