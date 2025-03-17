@@ -8,5 +8,12 @@
         "**/Thumbs.db": true,
         "**/__pycache__": true
     },
-    "editor.tabSize": 4
+    "editor.tabSize": 4,
+    "[json]": {
+        "editor.quickSuggestions": {
+            "strings": true
+        },
+        "editor.suggest.insertMode": "replace",
+        "editor.tabSize": 2
+    }
 }
