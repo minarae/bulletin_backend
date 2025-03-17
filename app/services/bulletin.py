@@ -4,6 +4,8 @@ from app.models import Bulletin, Church, ChurchAdmin, BulletinTemplate
 from app.schemas import BulletinCreate
 from app.models.user import User
 from fastapi import HTTPException
+
+
 class BulletinService:
 
     @staticmethod
