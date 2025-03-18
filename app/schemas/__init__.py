@@ -3,11 +3,11 @@
 
 from app.schemas.user import User, UserCreate, UserUpdate, UserInDB, Token, TokenPayload
 from app.schemas.church import Church, ChurchCreate, ChurchUpdate, ChurchCheck
-from app.schemas.bulletin import Bulletin, BulletinCreate, BulletinUpdate, BulletinTemplate, BulletinTemplateCreate, BulletinTemplateUpdate
+from app.schemas.bulletin import Bulletin, BulletinCreate, BulletinUpdate, BulletinTemplate, BulletinTemplateCreate, BulletinTemplateUpdate, BulletinPublish
 
 __all__ = [
     "User", "UserCreate", "UserUpdate", "UserInDB", "Token", "TokenPayload",
     "Church", "ChurchCreate", "ChurchUpdate", "ChurchCheck",
-    "Bulletin", "BulletinCreate", "BulletinUpdate",
+    "Bulletin", "BulletinCreate", "BulletinUpdate", "BulletinPublish",
     "BulletinTemplate", "BulletinTemplateCreate", "BulletinTemplateUpdate"
 ]
