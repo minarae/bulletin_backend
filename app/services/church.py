@@ -30,6 +30,34 @@ class ChurchService:
         return churches
 
     @staticmethod
+    def check_church_access(
+        db: Session,
+        church_id: int,
+        user_id: int
+    ) -> Church:
+        """교회 접근 권한을 확인하고 교회 정보를 반환합니다."""
+        # 교회 조회
+        db_church = db.query(Church).filter(
+            Church.id == church_id,
+            Church.is_deleted == 'F'
+        ).first()
+
+        if db_church is None:
+            raise HTTPException(status_code=404, detail="교회를 찾을 수 없습니다")
+
+        # 권한 확인
+        is_admin = db.query(ChurchAdmin).filter(
+            ChurchAdmin.church_id == church_id,
+            ChurchAdmin.user_id == user_id,
+            ChurchAdmin.is_deleted == 'F'
+        ).first()
+
+        if not is_admin:
+            raise HTTPException(status_code=403, detail="접근 권한이 없습니다")
+
+        return db_church
+
+    @staticmethod
     def create_church(
         db: Session,
         church_data: ChurchCreate,

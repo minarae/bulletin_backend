@@ -5,5 +5,6 @@ from app.services.auth import AuthService
 from app.services.user import UserService
 from app.services.bulletin import BulletinService
 from app.services.church import ChurchService
+from app.services.template import TemplateService
 
-__all__ = ["AuthService", "UserService", "BulletinService", "ChurchService"]
+__all__ = ["AuthService", "UserService", "BulletinService", "ChurchService", "TemplateService"]

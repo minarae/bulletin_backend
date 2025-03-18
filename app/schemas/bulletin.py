@@ -50,10 +50,16 @@ class BulletinUpdate(BaseModel):
     template_id: Optional[int] = None
 
 
+class BulletinPublish(BaseModel):
+    """주보 게시 상태 변경 스키마"""
+    is_published: bool
+
+
 class Bulletin(BulletinBase):
     """주보 응답 스키마"""
     id: int
     church_id: int
+    is_published: bool
     created_at: datetime
     updated_at: Optional[datetime] = None
     is_deleted: bool
