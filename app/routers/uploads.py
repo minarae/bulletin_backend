@@ -13,7 +13,6 @@ from app.models.user import User
 from app.models.church import Church
 
 router = APIRouter(
-    prefix="/uploads",
     tags=["uploads"],
     responses={404: {"description": "Not found"}},
 )
